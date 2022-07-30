@@ -1,0 +1,55 @@
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
+    <link rel="styleshhet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+        integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+</head>
+
+<body class='bg-dark'>
+
+    <div class="sidebar-header bg-dark text-white center m-1 bg-dark">
+        <h3 class='text-center'>Ingreso - Halcón FGB</h3>
+    </div>
+    <div class="container bg-white p-1 border border-warning rounded text-center">
+        <input type="text" name="text" id="text" readonly='' placeholder="Documento de Identidad"
+            class="form-control text-center">
+        <video id="preview" width="80%" class="m-auto p-3" style="border:1px solid black"></video>
+        <div class="w-100 text-center m-auto p-2 bg-dark">
+            <a href="http://192.168.101.3/LED=OFF" class="btn btn-success btn-lg active" role="button"> Abrir</a>
+            <a href="http://192.168.101.3/LED=ON" class="btn btn-Danger btn-lg active" role="button">Cerrar</a>
+            <a href="http://192.168.101.3/LED=PASS" class="btn btn-Warning btn-lg active" role="button">Abrir </a>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#text").on("input", function () {
+                console.log("Change2");
+            })
+        })
+    </script>
+    <script>
+        let scanner = new Instascan.Scanner({ video: document.getElementById("preview") });
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[1]);
+            } else {
+                alert("no cameras found");
+            }
+        }).catch(function (e) {
+            console.error(e);
+        });
+        scanner.addListener('scan', function (c) {
+            document.getElementById('text').value = c;
+            window.location = '../../asistencia3.php';
+        })
+    </script>
+</body>
+
+</html>
